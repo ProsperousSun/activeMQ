@@ -3,7 +3,7 @@ package com.singleFactory.lazySingle;
 public class LazySingle {
 
 
-    public static LazySingle lazySingle = null;
+    private static LazySingle lazySingle = null;
 
     private LazySingle(){
 
@@ -15,7 +15,10 @@ public class LazySingle {
      * @return
      */
     public static final LazySingle getInstance1(){
-        return new LazySingle();
+        if (lazySingle == null) {
+            lazySingle = new LazySingle();
+        }
+        return lazySingle;
     }
 
     /**
@@ -27,7 +30,7 @@ public class LazySingle {
      */
     public synchronized static final LazySingle getInstance2() {  //线程多的时候会响应性能
         if (null == lazySingle) {
-            return new LazySingle();
+            lazySingle = new LazySingle();
         }
         return lazySingle;
     }
@@ -54,7 +57,7 @@ public class LazySingle {
         if (null == lazySingle) {
             synchronized (LazySingle.class) {
                 if (null == lazySingle) {
-                    return new LazySingle();
+                    lazySingle = new LazySingle();
                 }
             }
         }
